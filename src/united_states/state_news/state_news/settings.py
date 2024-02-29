@@ -1,5 +1,4 @@
-import os
-# Scrapy settings for congressional project
+# Scrapy settings for state_news project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -8,20 +7,14 @@ import os
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "congressional"
+BOT_NAME = "state_news"
 
-SPIDER_MODULES = ["congressional.spiders"]
-NEWSPIDER_MODULE = "congressional.spiders"
+SPIDER_MODULES = ["state_news.spiders"]
+NEWSPIDER_MODULE = "state_news.spiders"
 
-POSTGRES_ADDRESS= os.environ.get('POSTGRES_ADDRESS')
-POSTGRES_PORT= os.environ.get('POSTGRES_PORT')
-POSTGRES_USERNAME= os.environ.get('POSTGRES_USERNAME')
-POSTGRES_PASSWORD= os.environ.get('POSTGRES_PASS')
-POSTGRES_DBNAME= os.environ.get('POSTGRES_DBNAME')
-GOV_INFO_API_KEY= os.environ.get('GOV_INFO_API_KEY')
-SCRAPEOPS_API_KEY= (os.environ.get('SCRAPEOPS_API_KEY'))
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = "congressional (+http://www.yourdomain.com)"
+#USER_AGENT = "state_news (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -32,7 +25,7 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+#DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -52,35 +45,26 @@ DOWNLOAD_DELAY = 1
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    "congressional.middlewares.CongressionalSpiderMiddleware": 543,
+#    "state_news.middlewares.StateNewsSpiderMiddleware": 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    "congressional.middlewares.CongressionalDownloaderMiddleware": 543,
+#    "state_news.middlewares.StateNewsDownloaderMiddleware": 543,
 #}
-
-DOWNLOADER_MIDDLEWARES = {
-        'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
-        'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-        }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
 #    "scrapy.extensions.telnet.TelnetConsole": None,
 #}
-EXTENSIONS = {
-        'scrapeops_scrapy.extension.ScrapeOpsMonitor': 500, 
-        }
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   "congressional.pipelines.CongressionalPipeline": 300,
-#    "congressional.pipelines.WriteCongressionalBills": 400,
-}
+#ITEM_PIPELINES = {
+#    "state_news.pipelines.StateNewsPipeline": 300,
+#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
