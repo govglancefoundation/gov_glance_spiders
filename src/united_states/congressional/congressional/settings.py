@@ -22,6 +22,7 @@ POSTGRES_PASSWORD= os.environ.get('POSTGRES_PASS')
 POSTGRES_DBNAME= os.environ.get('POSTGRES_DBNAME')
 GOV_INFO_API_KEY= os.environ.get('GOV_INFO_API_KEY')
 SCRAPEOPS_API_KEY= (os.environ.get('SCRAPEOPS_API_KEY'))
+CONGRESS_API_KEY= os.environ.get('CONGRESS_API_KEY')
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "congressional (+http://www.yourdomain.com)"
 
@@ -81,7 +82,7 @@ EXTENSIONS = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "congressional.pipelines.CongressionalPipeline": 300,
-#    "congressional.pipelines.WriteCongressionalBills": 400,
+   "congressional.pipelines.WriteCongressionalBills": 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

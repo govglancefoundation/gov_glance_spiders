@@ -217,3 +217,14 @@ class PublicPrivateLawsItem(scrapy.Item):
     category = scrapy.Field()
     other_identifier = scrapy.Field(serializer=dict)
     status_title = scrapy.Field()
+
+class CongressionalMembersItem(scrapy.Item):
+    bio_guid_id = scrapy.Field()
+    depiction = scrapy.Field()
+    district = scrapy.Field()
+    name = scrapy.Field()
+    party_name = scrapy.Field()
+    state = scrapy.Field()
+    terms = scrapy.Field()
+    created_at = scrapy.Field()
+    url = scrapy.Field()
