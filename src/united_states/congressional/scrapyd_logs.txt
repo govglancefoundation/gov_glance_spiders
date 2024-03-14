@@ -1,0 +1,3 @@
+Command 'scrapyd' not found, did you mean:
+  command 'scrapy' from deb python3-scrapy (2.10.0-1)
+Try: apt install <deb name>
