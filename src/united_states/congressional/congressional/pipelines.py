@@ -114,11 +114,12 @@ class ReadArticles:
 class WriteCongressionalBills:
 
     def __init__(self, POSTGRES_PASS, POSTGRES_USERNAME, POSTGRES_ADDRESS, POSTGRES_PORT, POSTGRES_DBNAME):
-            POSTGRES_USERNAME = POSTGRES_USERNAME
-            self.POSTGRES_PASS = POSTGRES_PASS
-            POSTGRES_ADDRESS = POSTGRES_ADDRESS
-            POSTGRES_PORT = POSTGRES_PORT
-            POSTGRES_DBNAME = POSTGRES_DBNAME
+            POSTGRES_USERNAME = get_project_settings().get('POSTGRES_USERNAME')
+            POSTGRES_PASS = get_project_settings().get('POSTGRES_PASSWORD')
+            POSTGRES_ADDRESS = get_project_settings().get('POSTGRES_ADDRESS')
+            POSTGRES_PORT = get_project_settings().get('POSTGRES_PORT')
+            POSTGRES_DBNAME = get_project_settings().get('POSTGRES_DBNAME')
+            
             self.schema = "united_states_of_america"
             self.connection = psycopg2.connect(host=POSTGRES_ADDRESS, user=POSTGRES_USERNAME, password=POSTGRES_PASS, dbname=POSTGRES_DBNAME, port=POSTGRES_PORT)
             self.cur = self.connection.cursor()

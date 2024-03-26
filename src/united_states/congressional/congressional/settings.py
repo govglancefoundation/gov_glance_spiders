@@ -81,7 +81,7 @@ EXTENSIONS = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "congressional.pipelines.CongressionalPipeline": 300,
-#    "congressional.pipelines.WriteCongressionalBills": 400,
+    "congressional.pipelines.WriteCongressionalBills": 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

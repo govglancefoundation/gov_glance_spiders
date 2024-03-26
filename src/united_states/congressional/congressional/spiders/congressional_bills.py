@@ -9,7 +9,7 @@ GOV_INFO_API_KEY = get_project_settings().get('GOV_INFO_API_KEY')
 class CongressionalBillsSpider(scrapy.Spider):
     name = "congressional_bills"
     allowed_domains = ["api.govinfo.gov"]
-    start_urls = [f"https://api.govinfo.gov/collections/BILLS/2023-01-01T20%3A18%3A10Z?pageSize=10&offsetMark=%2A&api_key={GOV_INFO_API_KEY}"]
+    start_urls = [f"https://api.govinfo.gov/collections/BILLS/2023-01-01T20%3A18%3A10Z?pageSize=1000&offsetMark=%2A&api_key={GOV_INFO_API_KEY}"]
     
 
     # need to get a list of packageId's from the api can compare them to our database. Yield a list and ten check which ones we do not have
@@ -21,7 +21,8 @@ class CongressionalBillsSpider(scrapy.Spider):
             if scrapped == False:
                 item_id = package['packageId']
                 yield response.follow(f'https://api.govinfo.gov/packages/{item_id}/summary?api_key={GOV_INFO_API_KEY}', callback=self.parse_item)
-
+        if 'nextPage' in data:
+            yield response.follow(data['nextPage']+f'&api_key={GOV_INFO_API_KEY}', callback=self.parse) 
     def parse_item(self, response):
         data = json.loads(response.body)
         short_title = data.get('shortTitle')
