@@ -6,13 +6,25 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 BOT_NAME = "representatives"
 
 SPIDER_MODULES = ["representatives.spiders"]
 NEWSPIDER_MODULE = "representatives.spiders"
 
-
+POSTGRES_ADDRESS= os.environ.get('POSTGRES_ADDRESS')
+POSTGRES_PORT= os.environ.get('POSTGRES_PORT')
+POSTGRES_USERNAME= os.environ.get('POSTGRES_USERNAME')
+POSTGRES_PASSWORD= os.environ.get('POSTGRES_PASS')
+POSTGRES_DBNAME= os.environ.get('POSTGRES_DBNAME')
+GOV_INFO_API_KEY_SANTI= os.environ.get('GOV_INFO_API_KEY_SANTI')
+GOV_INFO_API_KEY_CORBIN=os.environ.get('GOV_INFO_API_KEY_CORBIN')
+GOV_INFO_API_KEY= os.environ.get('GOV_INFO_API_KEY')
+SCRAPEOPS_API_KEY= (os.environ.get('SCRAPEOPS_API_KEY'))
+CONGRESS_API_KEY= os.environ.get('CONGRESS_API_KEY')
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "representatives (+http://www.yourdomain.com)"
 
@@ -25,7 +37,7 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+# DOWNLOAD_DELAY =1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -62,9 +74,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "representatives.pipelines.RepresentativesPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "representatives.pipelines.RepresentativesPipeline": 300,
+   "representatives.pipelines.WriteRespresetativesArticles": 400,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

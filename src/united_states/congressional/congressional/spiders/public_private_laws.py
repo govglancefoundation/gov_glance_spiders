@@ -10,7 +10,7 @@ GOV_INFO_API_KEY = get_project_settings().get('GOV_INFO_API_KEY')
 class PublicPrivateLawsSpider(scrapy.Spider):
     name = "public_private_laws"
     allowed_domains = ["api.govinfo.gov"]
-    start_urls = [f"https://api.govinfo.gov/collections/PLAW/2022-01-17T06%3A25%3A40Z?pageSize=100&offsetMark=%2A&api_key={GOV_INFO_API_KEY}"]
+    start_urls = [f"https://api.govinfo.gov/collections/PLAW/1800-01-17T06%3A25%3A40Z?pageSize=1000&offsetMark=%2A&api_key={GOV_INFO_API_KEY}"]
 
     def parse(self, response):
         
@@ -20,6 +20,8 @@ class PublicPrivateLawsSpider(scrapy.Spider):
             if scrapped == False:
                 item_id = package['packageId']
                 yield response.follow(f'https://api.govinfo.gov/packages/{item_id}/summary?api_key={GOV_INFO_API_KEY}', callback=self.parse_item)
+        if data.get('nextPage'):
+            yield response.follow(data['nextPage']+f'&api_key={GOV_INFO_API_KEY}', callback=self.parse)
 
     
     def parse_item(self, response):
