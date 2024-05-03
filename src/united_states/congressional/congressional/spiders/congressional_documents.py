@@ -1,16 +1,16 @@
 import scrapy
 import json
+import os
 from congressional.pipelines import ReadArticles
 from congressional.items import CongressionalItemDocuments
 from scrapy.utils.project import get_project_settings
 
 GOV_INFO_API_KEY = get_project_settings().get('GOV_INFO_API_KEY')
 
-
 class CongressionalDocumentsSpider(scrapy.Spider):
     name = "congressional_documents"
     allowed_domains = ["api.govinfo.gov"]
-    start_urls = [f"https://api.govinfo.gov/collections/CDOC/1999-01-01T06%3A25%3A40Z?pageSize=1000&offsetMark=%2A&api_key={GOV_INFO_API_KEY}"]
+    start_urls = [f"https://api.govinfo.gov/collections/CDOC/2024-01-01T06%3A25%3A40Z?pageSize=100&offsetMark=%2A&api_key={GOV_INFO_API_KEY}"]
 
     def parse(self, response):
         
@@ -20,9 +20,7 @@ class CongressionalDocumentsSpider(scrapy.Spider):
             if scrapped == False:
                 item_id = package['packageId']
                 yield response.follow(f'https://api.govinfo.gov/packages/{item_id}/summary?api_key={GOV_INFO_API_KEY}', callback=self.parse_item)
-        if data.get('nextPage'):
-            yield response.follow(data['nextPage']+f'&api_key={GOV_INFO_API_KEY}', callback=self.parse)
-
+    
     def parse_item(self, response):
         data = json.loads(response.body)
         item = CongressionalItemDocuments()

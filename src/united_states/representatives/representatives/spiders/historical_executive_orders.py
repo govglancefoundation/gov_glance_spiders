@@ -5,8 +5,9 @@ from representatives.pipelines import ReadArticles
 class HistoricalExecutiveOrdersSpider(scrapy.Spider):
     name = "historical_executive_orders"
     allowed_domains = ["www.presidency.ucsb.edu"]
-    start_urls = ["https://www.presidency.ucsb.edu/documents/app-categories/written-presidential-orders/presidential/executive-orders?page=129"]
+    start_urls = ["https://www.presidency.ucsb.edu/documents/app-categories/written-presidential-orders/presidential/executive-orders?page=130"]
     # start_urls = ['https://www.presidency.ucsb.edu/documents/app-categories/written-presidential-orders/presidential/executive-orders?page=698']
+    # start_urls = ['https://www.presidency.ucsb.edu/documents/app-categories/written-presidential-orders/presidential/executive-orders?page=900']
 
     def parse(self, response):
         main_content = response.xpath('//*[@id="block-system-main"]/div/div[4]')
@@ -26,7 +27,7 @@ class HistoricalExecutiveOrdersSpider(scrapy.Spider):
     def parse_article(self, response):
         main_content = response.xpath('//*[@id="block-system-main"]/div/div/div[1]')
         president = main_content.css('h3').css('a ::text').get()
-        title = main_content.css('div.field-ds-doc-title').css('h1 ::text').get().replace('Executive Order', '')
+        title = main_content.css('div.field-ds-doc-title').css('h1 ::text').get()
         date = main_content.css('span.date-display-single').attrib['content']
         description = main_content.css('div.field-docs-content').get()
         deposition_notes = main_content.css('div.field-docs-footnote').css('p ::text').get()

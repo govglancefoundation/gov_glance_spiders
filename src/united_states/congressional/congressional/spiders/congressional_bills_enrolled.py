@@ -13,7 +13,7 @@ class CongressionalBillsEnrolledSpider(scrapy.Spider):
 
     def parse(self, response):
         data = json.loads(response.body)
-        for package in data['packages'][:2]:
+        for package in data['packages']:
             scrapped = ReadArticles().check_item('congressional_bills_enrolled', package['packageId'], package['lastModified'])
             
             if scrapped == False:

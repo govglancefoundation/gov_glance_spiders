@@ -6,19 +6,16 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-import psycopg2
 import json
 import dateutil.parser
+import psycopg2
 from scrapy.utils.project import get_project_settings
 
-class CongressionalPipeline:
+class PresidentialDocumentsPipeline:
     def process_item(self, item, spider):
-        bill_id = None
-
         adapter = ItemAdapter(item)
         field_names = adapter.field_names()
-        if 'package_id' in field_names:
-            if adapter['collection_name'] in ['Congressional Hearings', 'Public and Private Laws']:
+        if adapter['collection_name'] in ['Congressional Hearings', 'Public and Private Laws']:
                 field1_value = adapter['document_type']
                 cham = field1_value.split('HR')[0]
                 if cham == 'H':
@@ -30,70 +27,57 @@ class CongressionalPipeline:
                     title = adapter['title'].title()
                     full_title = f"{cham}. Hrg. {field2_value}-{field3_value} - {title}"
                 adapter['status_title'] = full_title
-            if adapter['collection_name'] in ['Congressional Bills', 'Congressional Bills Enrolled']:
+        if adapter['collection_name'] in ['Congressional Bills', 'Congressional Bills Enrolled']:
+            field1_value = adapter['bill_type'].upper()
+            field2_value = adapter['bill_number']
+            field3_value = adapter['bill_version'].upper()
+            field4_value = adapter['title']
+            full_title = f"{field1_value}. {field2_value} ({field3_value}) - {field4_value}"
+            adapter['status_title'] = full_title
+        
+        for field_name in field_names:
+            if field_name == 'package_id':
+                bill_id = adapter[field_name]
+        for field_name in field_names:
+            value = adapter[field_name]
+            if value is not None:
+                if field_name == 'download':
+                    download_urls =adapter[field_name]
+                    for key, value in download_urls.items():
+                        if key in ['modsLink', 'premisLink']:
+                            url_string = value
+                            url_extention = url_string.split('/')[-1]
+                            download_url = url_string.replace("api","www").replace("/packages/", "/metadata/pkg/").replace(url_extention, '') +f'{url_extention}.xml'
+                            download_urls[key] = download_url
 
-                bill_version = adapter['bill_version']
-                if bill_version is None:
-                    bill_version = ''
-
-                field1_value = adapter['bill_type'].upper()
-                field2_value = adapter['bill_number']
-                field3_value = bill_version.upper()
-                field4_value = adapter['title']
-                full_title = f"{field1_value}. {field2_value} ({field3_value}) - {field4_value}"
-                adapter['status_title'] = full_title
-            
-            for field_name in field_names:
-                if field_name == 'package_id':
-                    bill_id = adapter[field_name]
-            for field_name in field_names:
-                value = adapter[field_name]
-                if value is not None:
-                    if field_name == 'download':
-                        download_urls =adapter[field_name]
-                        for key, value in download_urls.items():
-                            if key in ['modsLink', 'premisLink']:
-                                url_string = value
-                                url_extention = url_string.split('/')[-1]
-                                download_url = url_string.replace("api","www").replace("/packages/", "/metadata/pkg/").replace(url_extention, '') +f'{url_extention}.xml'
-                                download_urls[key] = download_url
-
-                            if key == 'xmlLink':
-                                url_string = value
-                                url_extention = url_string.split('/')[-1]
-                                download_url = url_string.replace("api","www").replace("/packages/", "/content/pkg/")+f'/{bill_id}.xml'
-                                download_urls[key] = download_url
-                            if key == 'txtLink':
-                                url_string = value
-                                url_extention = url_string.split('/')[-1]
-                                download_url = url_string.replace("api","www").replace("/packages/", "/content/pkg/")+f'l/{bill_id}.{url_extention}'
-                                download_urls[key] = download_url
-                            if key == 'zipLink':
-                                url_string = value
-                                url_extention = url_string.split('/')[-1]
-                                download_url = url_string.replace("api","www").replace("/packages/", "/content/pkg/").replace(f"/{url_extention}","")+f'.{url_extention}'
-                                download_urls[key] = download_url
-                            if key == 'pdfLink':
-                                url_string = value
-                                url_extention = url_string.split('/')[-1]
-                                download_url = url_string.replace("api","www").replace("/packages/", "/content/pkg/")+f'/{bill_id}.{url_extention}'
-                                download_urls[key] = download_url
-                        adapter[field_name] = download_urls
-                    if field_name in ['long_title', 'title']:
-                        value = adapter[field_name].title()
-                        adapter[field_name] = value
-                    if field_name == 'created_at':
-                        value = adapter[field_name]
-                        adapter[field_name] = dateutil.parser.parse(value)
-                    if field_name in ['download', 'related', 'other_identifiers', 'topics', 'committees', 'members', 'held_dates', 'serial_set', 'subjects', 'gov_info_references']:
-                        value = adapter[field_name]
-                        adapter[field_name] = json.dumps(value)
-        if 'bio_guide_id' in field_names:
-            for field_name in field_names:
+                        if key == 'xmlLink':
+                            url_string = value
+                            url_extention = url_string.split('/')[-1]
+                            download_url = url_string.replace("api","www").replace("/packages/", "/content/pkg/")+f'/{bill_id}.xml'
+                            download_urls[key] = download_url
+                        if key == 'txtLink':
+                            url_string = value
+                            url_extention = url_string.split('/')[-1]
+                            download_url = url_string.replace("api","www").replace("/packages/", "/content/pkg/")+f'l/{bill_id}.{url_extention}'
+                            download_urls[key] = download_url
+                        if key == 'zipLink':
+                            url_string = value
+                            url_extention = url_string.split('/')[-1]
+                            download_url = url_string.replace("api","www").replace("/packages/", "/content/pkg/").replace(f"/{url_extention}","")+f'.{url_extention}'
+                            download_urls[key] = download_url
+                        if key == 'pdfLink':
+                            url_string = value
+                            url_extention = url_string.split('/')[-1]
+                            download_url = url_string.replace("api","www").replace("/packages/", "/content/pkg/")+f'/{bill_id}.{url_extention}'
+                            download_urls[key] = download_url
+                    adapter[field_name] = download_urls
+                if field_name in ['long_title', 'title']:
+                    value = adapter[field_name].title()
+                    adapter[field_name] = value
                 if field_name == 'created_at':
                     value = adapter[field_name]
                     adapter[field_name] = dateutil.parser.parse(value)
-                if field_name in ['terms', 'depication', 'address_information', 'cosponsered_legislation','party_history', 'sponsored_legislation', 'terms']:
+                if field_name in ['download', 'related', 'other_identifiers', 'topics', 'committees', 'members', 'held_dates', 'serial_set', 'subjects', 'gov_info_references', 'dcpd_category', 'president', 'subject']:
                     value = adapter[field_name]
                     adapter[field_name] = json.dumps(value)
         return item
@@ -131,7 +115,7 @@ class ReadArticles:
             return True
         else:
             return False
-
+        
     def check_batch(self, items: list, table) -> list:
         table = table.lower()
         check_data_array = ','.join([f"(CAST('{x[0]}' AS character varying), CAST('{x[1]}' AS timestamp with time zone))" for x in items])
@@ -145,20 +129,7 @@ class ReadArticles:
         results = [i[0] for i in self.cur.fetchall()]
         return results
     
-    def check_batch(self, items: list, table) -> list:
-        table = table.lower()
-        check_data_array = ','.join([f"(CAST('{x[0]}' AS character varying), CAST('{x[1]}' AS timestamp with time zone))" for x in items])
-        query = f"""SELECT *
-                    FROM (VALUES {check_data_array}) AS data(package_id, created_at)
-                    LEFT JOIN {self.schema}.{table} AS cb 
-                    ON data.package_id = cb.package_id AND data.created_at = cb.created_at
-                    WHERE cb.package_id IS NULL;
-                    """
-        self.cur.execute(query)
-        results = [i[0] for i in self.cur.fetchall()]
-        return results
-
-class WriteCongressionalBills:
+class WritePresidentialDocsPipeline:
 
     def __init__(self, POSTGRES_PASS, POSTGRES_USERNAME, POSTGRES_ADDRESS, POSTGRES_PORT, POSTGRES_DBNAME):
             POSTGRES_USERNAME = POSTGRES_USERNAME
@@ -183,7 +154,7 @@ class WriteCongressionalBills:
     def process_item(self, item, spider): # Here we are going to get a dictionary or dataframe and publish new data
         table_name = item['collection_name'].lower().replace(' ', '_')
         schema = self.schema
-        topic = 'legisltive'
+        topic = 'executive'
         try:
             columns = []
 
@@ -227,7 +198,7 @@ class WriteCongressionalBills:
             query = f"INSERT INTO {schema}.{table_name} ({columns}) VALUES ({values})"
             # print(query)
             self.cur.execute(query, item)
-            # print(f"{item['package_id']} inserted to {table_name}")
+            print(f"Item inserted to {schema}.{table_name}")
             self.connection.commit()
         except psycopg2.Error as e:
             print("Error: ", e)

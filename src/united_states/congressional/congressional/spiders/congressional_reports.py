@@ -1,5 +1,6 @@
 import scrapy
 import json
+import os
 from congressional.pipelines import ReadArticles
 from congressional.items import CongressionalItemReports
 from scrapy.utils.project import get_project_settings

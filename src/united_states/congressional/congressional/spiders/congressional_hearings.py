@@ -1,11 +1,11 @@
 import scrapy
 import json
-from congressional.pipelines import ReadArticles
+import os
 from congressional.items import CongressionalItemHearings
+from congressional.pipelines import ReadArticles
 from scrapy.utils.project import get_project_settings
 
 GOV_INFO_API_KEY = get_project_settings().get('GOV_INFO_API_KEY')
-
 
 class CongressionalHearingsSpider(scrapy.Spider):
     name = "congressional_hearings"

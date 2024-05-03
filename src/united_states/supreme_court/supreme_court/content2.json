@@ -1,0 +1,92 @@
+[
+    {
+        "r": "11",
+        "created_at": "2024-03-19 00:00:00",
+        "docket_number": "22-1178",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/22-1178_p8k0.pdf",
+        "title": "FBI v. Fikre",
+        "justice": "Associate Justice Neil M. Gorsuch",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "9",
+        "created_at": "2024-03-15 00:00:00",
+        "docket_number": "22-324",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/22-324_09m1.pdf",
+        "title": "O’Connor-Ratcliff v. Garnier",
+        "justice": "Unsigned Per Curiam Opinion",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "8",
+        "created_at": "2024-03-15 00:00:00",
+        "docket_number": "22-611",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/22-611_ap6c.pdf",
+        "title": "Lindke v. Freed",
+        "justice": "Associate Justice Amy Coney Barrett",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "7",
+        "created_at": "2024-03-15 00:00:00",
+        "docket_number": "22-340",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/22-340_p86a.pdf",
+        "title": "Pulsifer v. United States",
+        "justice": "Associate Justice Elena Kagan",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "6",
+        "created_at": "2024-03-04 00:00:00",
+        "docket_number": "23-719",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/23-719_19m2.pdf",
+        "title": "Trump v. Anderson",
+        "justice": "Unsigned Per Curiam Opinion",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "5",
+        "created_at": "2024-02-21 00:00:00",
+        "docket_number": "22-721",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/601us1r05_1qm2.pdf",
+        "title": "McElrath v. Georgia",
+        "justice": "Associate Justice Ketanji Brown Jackson",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "4",
+        "created_at": "2024-02-21 00:00:00",
+        "docket_number": "22-500",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/601us1r04_4g15.pdf",
+        "title": "Great Lakes Ins. SE v. Raiders Retreat Realty Co.",
+        "justice": "Associate Justice Brett M. Kavanaugh",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "3",
+        "created_at": "2024-02-08 00:00:00",
+        "docket_number": "22-846",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/601us1r03_e29g.pdf",
+        "title": "Department of Agriculture Rural Development Rural Housing Service v. Kirtz",
+        "justice": "Associate Justice Neil M. Gorsuch",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "2",
+        "created_at": "2024-02-08 00:00:00",
+        "docket_number": "22-660",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/601us1r02_c07d.pdf",
+        "title": "Murray v. UBS Securities, LLC",
+        "justice": "Associate Justice Sonia Sotomayor",
+        "collection_name": "supreme_court_opinions"
+    },
+    {
+        "r": "1",
+        "created_at": "2023-12-05 00:00:00",
+        "docket_number": "22-429",
+        "url": "https://www.supremecourt.gov/opinions/23pdf/601us1r01_q86b.pdf",
+        "title": "Acheson Hotels, LLC v. Laufer",
+        "justice": "Associate Justice Amy Coney Barrett",
+        "collection_name": "supreme_court_opinions"
+    }
+]
