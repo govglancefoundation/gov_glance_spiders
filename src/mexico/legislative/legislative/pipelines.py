@@ -11,6 +11,7 @@ from scrapy.utils.project import get_project_settings
 import dateutil.parser
 from psycopg2 import errors
 import logging
+from unidecode import unidecode
 
 
 def convert_abbrevs(str= 'String Date'):
@@ -35,6 +36,9 @@ class LegislativePipeline:
             if field_name == 'created_at':
                 value = convert_abbrevs(adapter.get(field_name))
                 adapter[field_name] = dateutil.parser.parse(value)
+            if field_name == 'title':
+                value = adapter.get(field_name)
+                adapter[field_name] = value.replace('\n', '').replace('\t', '')
         return item
 
 class ReadArticles:
@@ -101,7 +105,7 @@ class WriteArticles:
         return cls(POSTGRES_PASS, POSTGRES_USERNAME, POSTGRES_ADDRESS, POSTGRES_PORT, POSTGRES_DBNAME)
 
     def process_item(self, item, spider): # Here we are going to get a dictionary or dataframe and publish new data
-        table_name = item['collection_name'].lower().replace(' ', '_')
+        table_name = unidecode(item['collection_name'].lower().replace(' ', '_'))
         schema = self.schema
         topic = 'legisltive'
         try:

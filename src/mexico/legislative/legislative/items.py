@@ -5,13 +5,6 @@
 
 import scrapy
 
-
-class LegislativeItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
-
-
 class ChamberOfDeputiesNewsItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
@@ -23,3 +16,15 @@ class ChamberOfDeputiesNewsItem(scrapy.Item):
     description = scrapy.Field()
     branch = scrapy.Field()
     topic = scrapy.Field()
+
+class SenateNewsroomItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    image = scrapy.Field()
+    created_at = scrapy.Field()
+    title = scrapy.Field()
+    url = scrapy.Field()
+    collection_name = scrapy.Field()
+    description = scrapy.Field()
+    topic = scrapy.Field()
+    branch = scrapy.Field()
