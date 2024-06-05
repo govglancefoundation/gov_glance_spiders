@@ -9,18 +9,21 @@ GOV_INFO_API_KEY = get_project_settings().get('GOV_INFO_API_KEY')
 class PresidentialDocsSpider(scrapy.Spider):
     name = "presidential_docs"
     allowed_domains = ["api.govinfo.gov"]
-    start_urls = [f"https://api.govinfo.gov/collections/CPD/1700-01-28T20%3A18%3A10Z?pageSize=1000&offsetMark=%2A&api_key={GOV_INFO_API_KEY}"]
+    start_urls = [f"https://api.govinfo.gov/collections/CPD/2024-01-01T20%3A18%3A10Z?pageSize=50&offsetMark=%2A&api_key={GOV_INFO_API_KEY}"]
 
     def parse(self, response):
         data = json.loads(response.body)
         for package in data['packages']:
-            # scrapped = ReadArticles().check_item('presidential_docs', package['packageId'], package['lastModified'])
-            scrapped = False
+            scrapped = ReadArticles().check_item('compilation_of_presidential_documents', package['packageId'], package['lastModified'])
+            # scrapped = False
             if scrapped == False:
                 item_id = package['packageId']
                 yield response.follow(f'https://api.govinfo.gov/packages/{item_id}/summary?api_key={GOV_INFO_API_KEY}', callback=self.parse_item)
-        if data.get('nextPage'):
-            yield response.follow(data['nextPage']+f'&api_key={GOV_INFO_API_KEY}', callback=self.parse)
+        '''
+        Code down below is for archiving. Not needed for this spider
+        '''
+        # if data.get('nextPage'):
+        #     yield response.follow(data['nextPage']+f'&api_key={GOV_INFO_API_KEY}', callback=self.parse)
 
     def parse_item(self, response):
         data = json.loads(response.body)
@@ -33,7 +36,7 @@ class PresidentialDocsSpider(scrapy.Spider):
             'subject': data.get('subject'),
             'package_id': data.get('packageId'),
             'collection_code': data.get('collectionCode'),
-            'details_link': data.get('detailsLink'),
+            'url': data.get('detailsLink'),
             'title': data.get('title'),
             'branch': data.get('branch'),
             'collection_name': data.get('collectionName'),
