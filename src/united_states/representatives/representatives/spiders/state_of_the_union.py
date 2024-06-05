@@ -11,10 +11,10 @@ class StateOfTheUnionSpider(scrapy.Spider):
         articles = main_content.css('div.views-row')
         for article in articles:
             yield response.follow(response.urljoin(article.css('a').attrib['href']),callback=self.parse_article)
-        if response.css('li.next'):
-            next_url = response.urljoin(response.css('li.next').css('a').attrib['href'])
-            print(next_url)
-            yield response.follow(next_url, callback=self.parse)
+        # if response.css('li.next'):
+        #     next_url = response.urljoin(response.css('li.next').css('a').attrib['href'])
+        #     print(next_url)
+        #     yield response.follow(next_url, callback=self.parse)
 
     def parse_article(self, response):
         main_content = response.xpath('//*[@id="block-system-main"]/div/div/div[1]')

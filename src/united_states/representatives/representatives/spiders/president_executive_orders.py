@@ -11,7 +11,7 @@ class PresidentExecutiveOrdersSpider(scrapy.Spider):
 
     def parse(self, response):
         data = json.loads(response.body)
-        for item in data['results'][:1]:
+        for item in data['results']:
             scrapped = ReadArticles().check_val('president_executive_orders', item.get('document_number'), 'document_number')
             pres = data['description']
             if scrapped == False:
@@ -36,5 +36,5 @@ class PresidentExecutiveOrdersSpider(scrapy.Spider):
                     'president': pres,
                     'collection_name': 'President Executive Orders'
                     }
-        if data.get('next_page_url'):
-            yield response.follow(data['next_page_url'], callback=self.parse)
+        # if data.get('next_page_url'):
+        #     yield response.follow(data['next_page_url'], callback=self.parse)
