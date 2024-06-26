@@ -224,9 +224,15 @@ class WriteCongressionalBills:
             columns = ', '.join(item.keys())
             values = ', '.join('%({})s'.format(key) for key in item.keys())
             # values = ', '.join('%({})s'.format(key) if not 'references' else 'ARRAY[%({})s]::TEXT[]'.format(key) for key in item.keys())
-            query = f"INSERT INTO {schema}.{table_name} ({columns}) VALUES ({values})"
-            # print(query)
+
+            query = f"INSERT INTO {schema}.{table_name} ({columns}) VALUES ({values}) RETURNING id;"
             self.cur.execute(query, item)
+
+            id_of_new_row = self.cur.fetchone()[0]
+            print(f"id for inserted item {id_of_new_row}")
+            query = f"INSERT INTO world_search_results (id, source, schema_source, ts) VALUES (%s, %s, %s, to_tsvector('english'::regconfig, %s));"
+            self.cur.execute(query, (id_of_new_row, table_name, schema, item['title'] ))
+            # print(query)
             # print(f"{item['package_id']} inserted to {table_name}")
             self.connection.commit()
         except psycopg2.Error as e:
