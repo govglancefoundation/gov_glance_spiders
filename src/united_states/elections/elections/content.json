@@ -1,0 +1,3 @@
+[
+{"active_through": 2024, "candidate_id": "P60005121", "candidate_inactive": false, "candidate_status": "C", "cycles": "[2014, 2016, 2024]", "district": "00", "district_number": 0, "election_districts": "[\"00\", \"00\"]", "election_years": "[2016, 2024]", "federal_funds_flag": false, "first_file_date": "2014-01-21", "has_raised_funds": true, "inactive_election_years": null, "incumbent_challenge": "C", "incumbent_challenge_full": "Challenger", "last_f2_date": "2023-06-29", "last_file_date": "2023-06-29", "load_date": "2023-07-10T21:05:09", "name": "ALLEN-REESE, POGO MOCHELLO MR", "office": "P", "office_full": "President", "party": "REP", "party_full": "REPUBLICAN PARTY", "state": "US", "collection_name": "president_candidates"}
+]
